@@ -7,6 +7,7 @@ import userRoutes from './routes/userRoutes.js';
 // Import the routes for authentication
 import authRoutes from './routes/authRoutes.js';
 import dotenv from 'dotenv';
+import { swaggerUi, swaggerSpec } from "./swagger.js";
 import productRoutes from './routes/productRoutes.js';
 import cors from 'cors'
 
@@ -16,12 +17,15 @@ dotenv.config();
 // Call the function to connect to our MongoDB database
 connectDB();
 
-// Create an instance of the express application
 const app = express();
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // Middleware: Tell express to parse incoming request bodies as JSON
 app.use(express.json());
 app.use(cors());
+
 // Routes: Tell express to use the userRoutes for any request that starts with '/users'
 app.use('/users', userRoutes);
 // Use authRoutes for authentication
